@@ -17,7 +17,7 @@ function home() {
  main.innerHTML = `<section class="hero"><div><p class="eyebrow">TVŮJ MALÝ JAZYKOVÝ TRÉNINK</p><h1>Ahoj Elo,<br>pojď si hrát<br><em>s češtinou.</em></h1><p class="intro">Vyber si, co si dnes procvičíš. Pár úloh, chvilka přemýšlení a zase budeš o kousek dál.</p><div class="hero-tags"><span>✎ Doplňuj</span><span>✓ Zkontroluj</span><span>↻ Zkus znovu</span></div></div><div class="letter-art" aria-hidden="true"><span class="orbit">č</span><span class="big-letter">ě<span class="spark">✦</span></span><span class="art-note">Chyba? Z té se učíme.</span><span class="small-letter">ý</span></div></section>
  ${session ? `<aside class="resume"><div><b>Máš tu rozepsané cvičení</b><p>${escape(session.title)} · ${session.ids.length} úloh</p></div><button id="resume">Pokračovat →</button></aside>`:''}
  <section class="topics"><div class="section-title"><div><p class="eyebrow">VYBER SI SVOU CESTU</p><h2>Co si dnes zkusíš?</h2></div><span>8 oblastí · 128 úloh</span></div><div class="topic-grid">${lessons.map((l,i)=>`<button class="topic t${i%4}" data-lesson="${l.id}"><span class="topic-number">0${i+1}</span><span class="topic-title">${escape(l.title)}</span><span class="topic-desc">${escape(l.desc)}</span><span class="topic-bottom">${l.items.length} úloh v zásobě <b>↗</b></span></button>`).join('')}</div></section>
- <section class="mixed"><div><p class="eyebrow">OD KAŽDÉHO TROCHU</p><h2>Promíchaný test znalostí</h2><p>24 úloh ze všech 8 oblastí. Písmena píšeš sama, bez nabídky. Každá další otázka je z jiné oblasti.</p></div><button id="mixed">Spustit promíchaný test →</button></section><p class="tip">Každá série má 8 úloh. Nová série nabídne další náhodný výběr.</p>`;
+ <section class="mixed"><div><p class="eyebrow">OD KAŽDÉHO TROCHU</p><h2>Promíchaný test znalostí</h2><p>24 úloh ze všech 8 oblastí. Písmena píšeš sama, bez vybírání možností. Každá další otázka je z jiné oblasti.</p></div><button id="mixed">Spustit promíchaný test →</button></section><p class="tip">Každá série má 8 úloh. Nová série nabídne další náhodný výběr.</p>`;
  main.querySelectorAll('[data-lesson]').forEach(b=>b.onclick=()=>start(b.dataset.lesson));
  main.querySelector('#mixed').onclick=()=>start('mixed');
  if(session) main.querySelector('#resume').onclick=()=>{renderExercise();goTop();};
@@ -37,10 +37,11 @@ function inputHTML(x,i) {
  else control=`<input id="a-${x.id}" data-answer="${x.id}" aria-label="${escape(label)}" value="${escape(value)}" placeholder="${x.kind==='phrase'?'Napiš výraz…':'…'}" autocomplete="off" autocapitalize="off" spellcheck="false" class="${x.kind==='phrase'?'phrase':'short'}">`;
  if(x.kind==='phrase') return `<label for="a-${x.id}" class="phrase-prompt">${escape(x.q)}</label>${control}`;
  const [before,after]=x.q.split('_');
+ const instruction=session.written && x.kind==='prefix' ? 'Doplň roz-, bez-, vz- nebo předložku bez.' : session.written && x.kind==='sz' ? 'Doplň předponu s-, z- nebo vz-.' : ''; 
  const typeControl = session.written
   ? `<input data-type="${x.id}" aria-label="Úloha ${i+1}: předpona nebo předložka" value="${escape(session.answers[x.id]?.type || '')}" placeholder="Napiš označení…" autocomplete="off" autocapitalize="off" spellcheck="false">`
   : `<select data-type="${x.id}" aria-label="Úloha ${i+1}: předpona nebo předložka"><option value="">Vyber…</option>${['předpona','předložka'].map(v=>`<option ${session.answers[x.id]?.type===v?'selected':''}>${v}</option>`).join('')}</select>`;
- return `<div class="sentence"><span>${escape(before)}</span>${control}<span>${escape(after)}</span></div>${x.typeAnswer?`<label class="type-label">Je doplněná část předpona, nebo předložka?${typeControl}</label>`:''}`;
+ return `${instruction?`<p class="item-instruction">${instruction}</p>`:''}<div class="sentence"><span>${escape(before)}</span>${control}<span>${escape(after)}</span></div>${x.typeAnswer?`<label class="type-label">Je doplněná část předpona, nebo předložka?${typeControl}</label>`:''}`;
 }
 function renderExercise() {
  const items=session.ids.map(id=>byId.get(id));
