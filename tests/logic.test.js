@@ -45,3 +45,14 @@ test('written classification tolerates case and outer spaces but requires the ri
  assert.equal(grade(q,{value:'bez',type:'předpona'}).correct,false);
  assert.equal(grade(q,{value:'bez',type:'   '}).filled,false);
 });
+
+
+test('classification accepts missing accents without relaxing spelling answers',()=>{
+ for(const type of ['predlozka','PREDLOZKA',' predložka ','předlozka']){
+  assert.equal(grade({answers:['bez'],typeAnswer:'předložka'},{value:'bez',type}).correct,true);
+ }
+ assert.equal(grade({answers:['roz'],typeAnswer:'předpona'},{value:'roz',type:'predpona'}).correct,true);
+ assert.equal(grade({answers:['bez'],typeAnswer:'předložka'},{value:'bez',type:'predpona'}).correct,false);
+ assert.equal(grade({answers:['í']},{value:'i'}).correct,false);
+ assert.equal(grade({answers:['před školou']},{value:'pred skolou'}).correct,false);
+});

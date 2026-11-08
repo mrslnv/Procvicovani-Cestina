@@ -19,6 +19,8 @@ Jednoduché procvičování češtiny pro tablet, vytvořené podle šesti dodan
 
 Běžná série má náhodných 8 úloh. Promíchaný test znalostí vybírá po 3 úlohách z každé oblasti, celkem 24. Každá následující otázka je z jiné oblasti, pořadí oblastí i výběr úloh se při každém spuštění mění. Odpovědi i označení předpony/předložky se v tomto testu píší ručně, bez rozbalovacích voleb. U předpon zůstává pokyn, ze které skupiny předpon se doplňuje, aby zadání mělo jednoznačné řešení. Oblasti otázek jsou skryté až do kontroly. Opakování chyb i obnovení rozepsaného testu zachovává ruční zadávání. Po kontrole se zobrazí výsledek a vysvětlení; lze opravit odpovědi, kontrolu opakovat nebo procvičovat jen nezvládnuté úlohy. Nevyplněné úlohy jsou označeny zvlášť. Každá úloha se počítá jako jeden bod; u úloh se dvěma volbami musí být správné obě.
 
+U určení předpony či předložky se přijímá i zápis bez diakritiky (`predpona`, `predlozka`). V pravopisné odpovědi se diakritika dál hodnotí.
+
 Celé výrazy se kontrolují včetně hranic slov a diakritiky. Velikost písmen, mezery na začátku a konci a počet mezer mezi slovy se ignorují. Aplikace vždy zachovává rozdíl např. mezi „pod stromem“ a „podstromem“.
 
 Rozepsaná série se ukládá do localStorage daného prohlížeče. Žádný účet, serverové ukládání, sledování ani externí knihovny. Postup se mezi zařízeními nesynchronizuje. Pokud prohlížeč ukládání zakáže, stránka funguje a oznámí, že se postup nezachová. Pro načtení webu je potřeba připojení k internetu.
