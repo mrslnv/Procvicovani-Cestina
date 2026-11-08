@@ -37,7 +37,7 @@ function inputHTML(x,i) {
  else control=`<input id="a-${x.id}" data-answer="${x.id}" aria-label="${escape(label)}" value="${escape(value)}" placeholder="${x.kind==='phrase'?'Napiš výraz…':'…'}" autocomplete="off" autocapitalize="off" spellcheck="false" class="${x.kind==='phrase'?'phrase':'short'}">`;
  if(x.kind==='phrase') return `<label for="a-${x.id}" class="phrase-prompt">${escape(x.q)}</label>${control}`;
  const [before,after]=x.q.split('_');
- const instruction=session.written && x.kind==='prefix' ? 'Doplň roz-, bez-, vz- nebo předložku bez.' : session.written && x.kind==='sz' ? 'Doplň předponu s-, z- nebo vz-.' : ''; 
+ const instruction=session.written && x.kind==='prefix' ? 'Doplň roz-, bez-, vz- nebo předložku bez.' : session.written && x.kind==='sz' ? 'Doplň předponu s-, z- nebo vz-.' : '';
  const typeControl = session.written
   ? `<input data-type="${x.id}" aria-label="Úloha ${i+1}: předpona nebo předložka" value="${escape(session.answers[x.id]?.type || '')}" placeholder="Napiš označení…" autocomplete="off" autocapitalize="off" spellcheck="false">`
   : `<select data-type="${x.id}" aria-label="Úloha ${i+1}: předpona nebo předložka"><option value="">Vyber…</option>${['předpona','předložka'].map(v=>`<option ${session.answers[x.id]?.type===v?'selected':''}>${v}</option>`).join('')}</select>`;
