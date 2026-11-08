@@ -27,3 +27,21 @@ test('prefix word and classification must both be right',()=>{
  assert.equal(grade(q,{value:'bez',type:'předložka'}).correct,true);
 });
 test('shuffle preserves input and all members',()=>{const a=[1,2,3,4];assert.deepEqual(shuffle(a).sort(),a);assert.deepEqual(a,[1,2,3,4])});
+
+test('mixed exam covers all eight areas, has no repeats, and always switches area',async()=>{
+ const {mixedQuestions}=await import('../logic.js');
+ for(let run=0;run<100;run++){
+  const items=mixedQuestions(lessons);
+  assert.equal(items.length,24);
+  assert.equal(new Set(items.map(x=>x.id)).size,24);
+  const area=x=>x.id.split('-')[0];
+  for(const lesson of lessons)assert.equal(items.filter(x=>area(x)===lesson.id).length,3);
+  for(let i=1;i<items.length;i++)assert.notEqual(area(items[i]),area(items[i-1]));
+ }
+});
+test('written classification tolerates case and outer spaces but requires the right term',()=>{
+ const q={answers:['bez'],typeAnswer:'předložka'};
+ assert.equal(grade(q,{value:' BEZ ',type:' PŘEDLOŽKA '}).correct,true);
+ assert.equal(grade(q,{value:'bez',type:'předpona'}).correct,false);
+ assert.equal(grade(q,{value:'bez',type:'   '}).filled,false);
+});
